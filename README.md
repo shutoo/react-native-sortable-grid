@@ -120,7 +120,7 @@ Flag to mark a child node as being inactive. If set, no touch events will be fir
 
 - ``` fixed ``` **Boolean**
 
-Flag to mark a child node as being fixed. If set, this node will remain in it's original position and won't be affected by other nodes rearrangement.
+Flag to mark a child node as being fixed. If set, this node will remain in it's original (at the end) position and won't be affected by other nodes rearrangement.
 
 ## onDragRelease return value looks like this:
 

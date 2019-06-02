@@ -46,30 +46,36 @@ class Block extends Component {
 
 class SortableGrid extends Component {
 
-    render = () =>
-      <Animated.View
-        style={ this._getGridStyle() }
-        onLayout={this.assessGridSize}
-      >
-        { this.state.gridLayout &&
-          this.items.map( (item, key) =>
-            <Block
-              key = { key }
-              style = { this._getBlockStyle(key) }
-              onLayout = { this.saveBlockPositions(key) }
-              panHandlers = { this._panResponder.panHandlers }
-              delayLongPress = { this.dragActivationTreshold }
-              onLongPress = { this.activateDrag(key) }
-              onPress = { this.handleTap(item.props) }
-              itemWrapperStyle = { this._getItemWrapperStyle(key) }
-              deletionView = { this._getDeletionView(key) }
-              inactive = { item.props.inactive }
-              fixed = { item.props.fixed }
-            >
-              {item}
-            </Block>
-        )}
-      </Animated.View>
+    render = () => {
+      this.items.sort((a, b) => {
+        return Number(b.props.fixed === undefined) - Number(a.props.fixed === undefined);
+      });
+      return (
+        <Animated.View
+          style={ this._getGridStyle() }
+          onLayout={this.assessGridSize}
+        >
+          { this.state.gridLayout &&
+            this.items.map( (item, key) =>
+              <Block
+                key = { key }
+                style = { this._getBlockStyle(key) }
+                onLayout = { this.saveBlockPositions(key) }
+                panHandlers = { this._panResponder.panHandlers }
+                delayLongPress = { this.dragActivationTreshold }
+                onLongPress = { this.activateDrag(key) }
+                onPress = { this.handleTap(item.props) }
+                itemWrapperStyle = { this._getItemWrapperStyle(key) }
+                deletionView = { this._getDeletionView(key) }
+                inactive = { item.props.inactive }
+                fixed = { item.props.fixed }
+              >
+                {item}
+              </Block>
+          )}
+        </Animated.View>
+      );
+    }
 
   constructor() {
     super()
