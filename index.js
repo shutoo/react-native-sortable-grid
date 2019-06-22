@@ -307,8 +307,8 @@ class SortableGrid extends Component {
     if (this.state.gridLayout != nativeEvent.layout) {
       this.setState({
         gridLayout: nativeEvent.layout,
-        blockWidth: this.blockWidth,
-        blockHeight: this.blockHeight
+        blockWidth: Math.floor(this.blockWidth),
+        blockHeight: Math.floor(this.blockHeight)
       })
     }
   }
