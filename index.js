@@ -77,6 +77,9 @@ class SortableGrid extends Component {
       );
     }
 
+
+  static shared = null;
+
   constructor() {
     super()
 
@@ -109,6 +112,8 @@ class SortableGrid extends Component {
     this.tapIgnore         = false
     this.doubleTapWait     = false
 
+    SortableGrid.shared = this;
+
     this.state = {
       gridLayout: null,
       blockPositions: [],
@@ -132,13 +137,19 @@ class SortableGrid extends Component {
     return { deleteModeOn }
   }
 
-  componentWillMount = () => this.createTouchHandlers()
-
-  componentDidMount = () => this.handleNewProps(this.props)
+  componentDidMount = () => {
+    this.createTouchHandlers()
+    this.handleNewProps(this.props)
+  }
 
   componentWillUnmount = () => { if (this.tapTimer) clearTimeout(this.tapTimer) }
 
-  componentWillReceiveProps = (properties) => this.handleNewProps(properties)
+  static getDerivedStateFromProps = (properties) => {
+    if (SortableGrid.shared) {
+      SortableGrid.shared.handleNewProps(properties)
+    }
+    return null;
+  }
 
   handleNewProps = (properties) => {
     this._assignReceivedPropertiesIntoThis(properties)
