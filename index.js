@@ -117,7 +117,7 @@ class SortableGrid extends Component {
     this.state = {
       gridLayout: null,
       blockPositions: [],
-      startDragWiggle: new Animated.Value(0),
+      startDragScale: new Animated.Value(1),
       activeBlock: null,
       blockWidth: null,
       blockHeight: null,
@@ -305,7 +305,6 @@ class SortableGrid extends Component {
   }
 
   assessGridSize = ({nativeEvent}) => {
-    console.log("Calculating grid size");
     if (this.props.itemWidth && this.props.itemWidth < nativeEvent.layout.width) {
       this.itemsPerRow = Math.floor(nativeEvent.layout.width / this.props.itemWidth)
       this.blockWidth = nativeEvent.layout.width / this.itemsPerRow
@@ -481,21 +480,15 @@ class SortableGrid extends Component {
 
   _defaultDragActivationWiggle = () => {
     if (!this.dragStartAnimation) {
-      this.state.startDragWiggle.setValue(20)
-      Animated.spring(this.state.startDragWiggle, {
-        toValue: 0,
-        velocity: 2000,
-        tension: 2000,
-        friction: 5
+      Animated.timing(this.state.startDragScale, {
+        toValue: 1.1,
       }).start()
     }
   }
 
   _blockActivationWiggle = () => {
     return this.dragStartAnimation ||
-    { transform: [{ rotate: this.state.startDragWiggle.interpolate({
-      inputRange:  [0, 360],
-      outputRange: ['0 deg', '360 deg']})}]}
+    { transform: [{ scale: this.state.startDragScale}]}
   }
 
   _assignReceivedPropertiesIntoThis(properties) {
